@@ -16,8 +16,6 @@ return new class extends Migration
             $table->string('invoice_number', 50);
             $table->date('invoice_date')->nullable();
             $table->date('due_date')->nullable();
-            $table->string('product', 50);
-            $table->string( 'section' );
             $table->decimal('discount');
             $table->decimal('value_vat');
             $table->string('rate_vat', 999);
@@ -25,7 +23,7 @@ return new class extends Migration
             $table->string('status', 50);
             $table->integer('value_status');
             $table->text('note')->nullable();
-            $table->string('user');
+            $table->foreignId('user_id')->constrained('users');
             $table->softDeletes();
             $table->timestamps();
         });

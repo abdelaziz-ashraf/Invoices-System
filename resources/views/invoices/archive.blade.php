@@ -13,8 +13,8 @@
     <div class="breadcrumb-header justify-content-between">
         <div class="my-auto">
             <div class="d-flex">
-                <h4 class="content-title mb-0 my-auto">الفواتير</h4><span class="text-muted mt-1 tx-13 mr-2 mb-0">/ قائمة
-                    الفواتير</span>
+                <h4 class="content-title mb-0 my-auto"> الفواتير</h4><span class="text-muted mt-1 tx-13 mr-2 mb-0">/ قائمة
+                    ارشيف الفواتير</span>
             </div>
         </div>
     </div>
@@ -31,10 +31,6 @@
         <!--div-->
         <div class="col-xl-12">
             <div class="card mg-b-20">
-                <div class="card-header pb-0">
-                        <a href="{{route('invoices.create')}}" class="modal-effect btn btn-sm btn-primary" style="color:white"><i
-                                class="fas fa-plus"></i>&nbsp; اضافة فاتورة</a>
-                </div>
                 <div class="card-body">
                     <div class="table-responsive">
                         <table id="example1" class="table key-buttons text-md-nowrap">
@@ -52,7 +48,7 @@
                                 <th class="border-bottom-0">الاجمالي</th>
                                 <th class="border-bottom-0">الحالة</th>
                                 <th class="border-bottom-0">ملاحظات</th>
-                                <th class="border-bottom-0">العمليات</th>
+                                <th class="border-bottom-0"></th>
                             </tr>
                             </thead>
                             <tbody>
@@ -87,15 +83,9 @@
                                                     class="btn ripple btn-primary btn-sm" data-toggle="dropdown"
                                                     type="button">العمليات<i class="fas fa-caret-down ml-1"></i></button>
                                             <div class="dropdown-menu tx-13">
-                                                <div class="dropdown-item " >
-                                                    <a class="btn btn-sm btn-primary"
-                                                       href=" {{ route('invoices.edit', $invoice) }}">تعديل
-                                                        الفاتورة</a>
-                                                </div>
 
-
-                                                <form action="{{route('invoices.destroy', $invoice)}}" method="post" class="d-inline-block dropdown-item">
-                                                    @method('delete')
+                                                <form action="{{route('invoices.unarchive', $invoice)}}" method="post" class="d-inline-block dropdown-item">
+                                                    @method('put')
                                                     @csrf
                                                     <button type="submit" class="btn btn-sm btn-danger">حذف</button>
                                                 </form>

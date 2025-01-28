@@ -8,7 +8,12 @@ class Section extends Model
 {
     protected $guarded = [];
 
-    function products() {
+    public function products() {
         return $this->hasMany(Product::class);
+    }
+
+    public function invoices()
+    {
+        return $this->hasMany(Invoices::class);
     }
 }

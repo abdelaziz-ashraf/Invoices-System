@@ -27,6 +27,12 @@ class SectionController extends Controller
         return redirect()->route('sections.index');
     }
 
+    public function getProducts(Section $section)
+    {
+        $products = $section->products()->pluck('name', 'id');
+        return json_encode($products);
+    }
+
     public function edit(Section $section)
     {
         return view('sections.edit', compact('section'));
