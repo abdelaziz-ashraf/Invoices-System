@@ -93,6 +93,11 @@
                                                         الفاتورة</a>
                                                 </div>
 
+                                                <div class="dropdown-item " >
+                                                    <a class="btn btn-sm btn-info"
+                                                       href=" {{ route('invoices.print', $invoice) }}">طباعة
+                                                        الفاتورة</a>
+                                                </div>
 
                                                 <form action="{{route('invoices.destroy', $invoice)}}" method="post" class="d-inline-block dropdown-item">
                                                     @method('delete')

@@ -66,4 +66,9 @@ class InvoicesController extends Controller
         session()->flash('success', 'Invoice has been unarchived');
         return redirect()->route('invoices.archive');
     }
+
+    public function print(Invoices $invoice)
+    {
+        return view('invoices.print', compact('invoice'));
+    }
 }

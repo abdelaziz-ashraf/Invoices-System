@@ -22,6 +22,7 @@ Route::middleware('auth')->group(function () {
 Route::resource('sections', \App\Http\Controllers\SectionController::class)->except(['show', 'create']);
 Route::get('sections/{section}/get-products', [\App\Http\Controllers\SectionController::class, 'getProducts'])->name('sections.products');
 Route::resource('products', \App\Http\Controllers\ProductController::class)->except(['show', 'create']);
+Route::get('invoices/{invoice}/print', [InvoicesController::class, 'print'])->name('invoices.print');
 Route::get('/invoices/archive', [InvoicesController::class, 'archive'])->name('invoices.archive');
 Route::put('/invoices/{id}/unarchive', [InvoicesController::class, 'unarchive'])->name('invoices.unarchive');
 Route::resource('invoices', InvoicesController::class)->except(['show']);
