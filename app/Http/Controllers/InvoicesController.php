@@ -59,9 +59,10 @@ class InvoicesController extends Controller
         return view('invoices.archive', compact('invoices'));
     }
 
-    public function unarchive(Invoices $invoice)
+    public function unarchive($id)
     {
-        $invoice->update(['deleted_at', null]);
+        $invoice = Invoices::onlyTrashed()->where('id', $id)->first();
+        $invoice->update(['deleted_at' => null]);
         session()->flash('success', 'Invoice has been unarchived');
         return redirect()->route('invoices.archive');
     }

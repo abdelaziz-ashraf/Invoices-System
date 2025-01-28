@@ -19,13 +19,12 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::resource('invoices', \App\Http\Controllers\InvoicesController::class);
 Route::resource('sections', \App\Http\Controllers\SectionController::class)->except(['show', 'create']);
 Route::get('sections/{section}/get-products', [\App\Http\Controllers\SectionController::class, 'getProducts'])->name('sections.products');
 Route::resource('products', \App\Http\Controllers\ProductController::class)->except(['show', 'create']);
 Route::get('/invoices/archive', [InvoicesController::class, 'archive'])->name('invoices.archive');
-Route::get('/invoices/{invoice}/archive', [InvoicesController::class, 'unarchive'])->name('invoices.unarchive');
-Route::resource('invoices', InvoicesController::class)->except(['show', 'create']);
+Route::put('/invoices/{id}/unarchive', [InvoicesController::class, 'unarchive'])->name('invoices.unarchive');
+Route::resource('invoices', InvoicesController::class)->except(['show']);
 
 require __DIR__.'/auth.php';
 

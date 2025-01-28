@@ -84,10 +84,10 @@
                                                     type="button">العمليات<i class="fas fa-caret-down ml-1"></i></button>
                                             <div class="dropdown-menu tx-13">
 
-                                                <form action="{{route('invoices.unarchive', $invoice)}}" method="post" class="d-inline-block dropdown-item">
+                                                <form action="{{route('invoices.unarchive', $invoice->id)}}" method="post" class="d-inline-block dropdown-item">
                                                     @method('put')
                                                     @csrf
-                                                    <button type="submit" class="btn btn-sm btn-danger">حذف</button>
+                                                    <button type="submit" class="btn btn-sm btn-danger">استعاده</button>
                                                 </form>
 
                                             </div>
