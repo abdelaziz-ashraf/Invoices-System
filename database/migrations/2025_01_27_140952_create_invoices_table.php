@@ -20,8 +20,7 @@ return new class extends Migration
             $table->decimal('value_vat');
             $table->string('rate_vat', 999);
             $table->decimal('total');
-            $table->string('status', 50);
-            $table->integer('value_status');
+            $table->boolean('status')->default(0);
             $table->text('note')->nullable();
             $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
             $table->softDeletes();

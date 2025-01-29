@@ -25,8 +25,6 @@ class InvoicesController extends Controller
     public function store(StoreInvoiceRequest $request)
     {
         $data = $request->validated();
-        $data['status'] = 'Unpaid';
-        $data['value_status'] = 2;
         $data['user_id'] = auth()->id();
         Invoices::create($data);
         session()->flash('success', 'Invoice has been created');
@@ -70,5 +68,12 @@ class InvoicesController extends Controller
     public function print(Invoices $invoice)
     {
         return view('invoices.print', compact('invoice'));
+    }
+
+    public function changeStatus(Invoices $invoice)
+    {
+        $invoice->update(['status' => !$invoice->status]);
+        session()->flash('success', 'Invoice status has been changed');
+        return redirect()->back();
     }
 }

@@ -72,14 +72,32 @@
                                     <td>{{ $invoice->value_vat }}</td>
                                     <td>{{ $invoice->total }}</td>
                                     <td>
-                                        @if ($invoice->value_status == 1)
-                                            <span class="text-success">{{ $invoice->status }}</span>
-                                        @elseif($invoice->value_status == 2)
-                                            <span class="text-danger">{{ $invoice->status }}</span>
-                                        @else
-                                            <span class="text-warning">{{ $invoice->status }}</span>
-                                        @endif
+                                        <div class="dropdown">
+                                            <button aria-expanded="false" aria-haspopup="true"
+                                                    class="btn ripple {{$invoice->status ? 'btn-primary' : 'btn-danger'}} btn-sm" data-toggle="dropdown"
+                                                    type="button">
+                                                @if($invoice->status)
+                                                    مدفوعه
+                                                @else
+                                                    غير مدفوعه
+                                                @endif
 
+                                                <i class="fas fa-caret-down ml-1"></i></button>
+                                            <div class="dropdown-menu tx-13">
+                                                <form action="{{route('invoices.change.status', $invoice)}}" method="post" class="d-inline-block dropdown-item">
+                                                    @method('PATCH')
+                                                    @csrf
+                                                    <button type="submit" class="btn btn-sm {{$invoice->status ? 'btn-danger' : 'btn-primary'}}">
+                                                        @if($invoice->status)
+                                                            تغيير الى غير مدفوعة
+                                                        @else
+                                                            تغيير الى مدفوعة
+                                                        @endif
+                                                    </button>
+                                                </form>
+
+                                            </div>
+                                        </div>
                                     </td>
 
                                     <td>{{ $invoice->note }}</td>
