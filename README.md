@@ -1,67 +1,89 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Invoicing System 
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+## Introduction
+This is a Laravel 11-based invoicing system with user authentication, role-based access control, and invoice management functionalities. The application allows administrators to manage normal employees, sections, products, and invoices.
+It features a dashboard built using Blade templates and visualizes data using Laravel ChartsJS for charts.
 
-## About Laravel
+## Features
+- User Authentication (Laravel Breeze)
+- Role-based Access Control (Admin & Employee)
+- Section & Product Management
+- Invoice Management (Create, Edit, Archive, Print)
+- Soft Delete & Restore for Invoices
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Technologies Used
+- **Laravel 11** (PHP framework)
+- **Spatie Permissions** (Role-based access control)
+- **Blade Templates** (Frontend UI)
+- **Laravel Chartjs** (For draw charts)
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Installation
+1. **Clone the repository**
+   ```sh
+   git clone https://github.com/your-repo.git
+   cd your-project-folder
+   ```
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+2. **Install dependencies**
+   ```sh
+   composer install
+   npm install && npm run dev
+   ```
 
-## Learning Laravel
+3. **Set up environment**
+   ```sh
+   cp .env.example .env
+   php artisan key:generate
+   ```
+   Configure your `.env` file with database credentials.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+4. **Run migrations & seed database**
+   ```sh
+   php artisan migrate --seed
+   ```
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+5. **Start the server**
+   ```sh
+   php artisan serve
+   ```
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## Authentication
+- Users must log in to access the system.
+- Admin users can manage employees, sections, products, and invoices.
 
-## Laravel Sponsors
+## Routes Overview
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+### **Authenticated Routes (`auth` middleware)**
+| Method | URI | Controller | Function                        |
+|--------|----|------------|---------------------------------|
+| GET    | `/dashboard` | `HomeController@index` | Dashboard                       |
+| GET    | `/sections` | `SectionController@index` | View sections                   |
+| GET    | `/sections/{section}/get-products` | `SectionController@getProducts` | Get section products            |
+| GET    | `/products` | `ProductController@index` | View products                   |
+| GET    | `/invoices` | `InvoicesController@index` | View invoices                   |
+| GET    | `/invoices/create` | `InvoicesController@create` | Create invoice                  |
+| POST   | `/invoices` | `InvoicesController@store` | Store invoice                   |
+| GET    | `/invoices/archive` | `InvoicesController@archive` | View archived invoices          |
+| PATCH  | `/invoices/{invoice}/change-status` | `InvoicesController@changeStatus` | Change invoice status (un/paid) |
 
-### Premium Partners
+### **Admin-Only Routes (`role:admin` middleware)**
+| Method | URI | Controller | Function |
+|--------|----|------------|----------|
+| GET    | `/users` | `AdminController@users` | View users |
+| POST   | `/admin/add-employee` | `AdminController@storeEmployee` | Add employee |
+| DELETE | `/admin/delete-employee/{user}` | `AdminController@deleteEmployee` | Remove employee |
+| POST   | `/sections` | `SectionController@store` | Add section |
+| GET    | `/sections/{section}/edit` | `SectionController@edit` | Edit section |
+| PUT    | `/sections/{section}` | `SectionController@update` | Update section |
+| DELETE | `/sections/{section}` | `SectionController@destroy` | Delete section |
+| GET    | `/invoices/{invoice}/edit` | `InvoicesController@edit` | Edit invoice |
+| PUT    | `/invoices/{invoice}` | `InvoicesController@update` | Update invoice |
+| DELETE | `/invoices/{invoice}` | `InvoicesController@destroy` | Delete invoice |
+| PUT    | `/invoices/{id}/unarchive` | `InvoicesController@unarchive` | Restore invoice |
+| GET    | `/invoices/{invoice}/print` | `InvoicesController@print` | Print invoice |
+| POST   | `/products` | `ProductController@store` | Add product |
+| GET    | `/products/{product}/edit` | `ProductController@edit` | Edit product |
+| PUT    | `/products/{product}` | `ProductController@update` | Update product |
+| DELETE | `/products/{product}` | `ProductController@destroy` | Delete product |
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
-
-## Contributing
-
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
-# shop-management-system-dashboard
+---
