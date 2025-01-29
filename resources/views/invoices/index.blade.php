@@ -52,7 +52,9 @@
                                 <th class="border-bottom-0">الاجمالي</th>
                                 <th class="border-bottom-0">الحالة</th>
                                 <th class="border-bottom-0">ملاحظات</th>
-                                <th class="border-bottom-0">العمليات</th>
+                                @role('admin')
+                                    <th class="border-bottom-0">العمليات</th>
+                                @endrole
                             </tr>
                             </thead>
                             <tbody>
@@ -81,6 +83,7 @@
                                     </td>
 
                                     <td>{{ $invoice->note }}</td>
+                                    @role('admin')
                                     <td>
                                         <div class="dropdown">
                                             <button aria-expanded="false" aria-haspopup="true"
@@ -102,12 +105,13 @@
                                                 <form action="{{route('invoices.destroy', $invoice)}}" method="post" class="d-inline-block dropdown-item">
                                                     @method('delete')
                                                     @csrf
-                                                    <button type="submit" class="btn btn-sm btn-danger">حذف</button>
+                                                    <button type="submit" class="btn btn-sm btn-danger">أرشفة</button>
                                                 </form>
 
                                             </div>
                                         </div>
                                     </td>
+                                    @endrole
                                 </tr>
                             @endforeach
                             </tbody>

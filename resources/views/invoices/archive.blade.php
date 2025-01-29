@@ -48,7 +48,9 @@
                                 <th class="border-bottom-0">الاجمالي</th>
                                 <th class="border-bottom-0">الحالة</th>
                                 <th class="border-bottom-0">ملاحظات</th>
+                                @role('admin')
                                 <th class="border-bottom-0"></th>
+                                @endrole
                             </tr>
                             </thead>
                             <tbody>
@@ -77,6 +79,7 @@
                                     </td>
 
                                     <td>{{ $invoice->note }}</td>
+                                    @role('admin')
                                     <td>
                                         <div class="dropdown">
                                             <button aria-expanded="false" aria-haspopup="true"
@@ -93,6 +96,7 @@
                                             </div>
                                         </div>
                                     </td>
+                                    @endrole
                                 </tr>
                             @endforeach
                             </tbody>

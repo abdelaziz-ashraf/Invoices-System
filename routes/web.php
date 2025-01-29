@@ -2,30 +2,59 @@
 
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\InvoicesController;
-use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ProductController;
+use App\Http\Controllers\SectionController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('auth.login');
 });
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
-
 Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-});
+    Route::view('/dashboard', 'dashboard')->name('dashboard');
 
-Route::resource('sections', \App\Http\Controllers\SectionController::class)->except(['show', 'create']);
-Route::get('sections/{section}/get-products', [\App\Http\Controllers\SectionController::class, 'getProducts'])->name('sections.products');
-Route::resource('products', \App\Http\Controllers\ProductController::class)->except(['show', 'create']);
-Route::get('invoices/{invoice}/print', [InvoicesController::class, 'print'])->name('invoices.print');
-Route::get('/invoices/archive', [InvoicesController::class, 'archive'])->name('invoices.archive');
-Route::put('/invoices/{id}/unarchive', [InvoicesController::class, 'unarchive'])->name('invoices.unarchive');
-Route::resource('invoices', InvoicesController::class)->except(['show']);
+    Route::get('sections', [SectionController::class, 'index'])->name('sections.index');
+    Route::get('sections/{section}/get-products', [SectionController::class, 'getProducts'])->name('sections.products');
+
+    Route::get('products', [ProductController::class, 'index'])->name('products.index');
+
+    Route::get('/invoices', [InvoicesController::class, 'index'])->name('invoices.index');
+    Route::get('/invoices/archive', [InvoicesController::class, 'archive'])->name('invoices.archive');
+
+    Route::middleware(['role:admin'])->group(function () {
+
+        Route::controller(AdminController::class)->group(function () {
+            Route::get('users', 'users')->name('admins.users');
+            Route::post('admin/add-employee', 'storeEmployee')->name('admins.store.employee');
+            Route::delete('admin/delete-employee/{user}', 'deleteEmployee')->name('admins.delete.employee');
+        });
+
+        Route::controller(SectionController::class)->group(function () {
+           Route::post('/sections', 'store')->name('sections.store');
+           Route::get('/sections/{section}/edit', 'edit')->name('sections.edit');
+           Route::put('/sections/{section}', 'update')->name('sections.update');
+           Route::delete('/sections/{section}', 'destroy')->name('sections.destroy');
+        });
+
+        Route::controller(InvoicesController::class)->group(function () {
+            Route::get('invoices/create', 'create')->name('invoices.create');
+            Route::post('invoices', 'store')->name('invoices.store');
+            Route::get('invoices/{invoice}/edit', 'edit')->name('invoices.edit');
+            Route::put('invoices/{invoice}', 'update')->name('invoices.update');
+            Route::delete('invoices/{invoice}', 'destroy')->name('invoices.destroy');
+            Route::put('/invoices/{id}/unarchive', 'unarchive')->name('invoices.unarchive');
+            Route::get('invoices/{invoice}/print', 'print')->name('invoices.print');
+        });
+
+        Route::controller(ProductController::class)->group(function () {
+            Route::post('products', 'store')->name('products.store');
+            Route::get('products/{product}/edit', 'edit')->name('products.edit');
+            Route::put('products/{product}', 'update')->name('products.update');
+            Route::delete('products/{product}', 'destroy')->name('products.destroy');
+        });
+    });
+
+});
 
 require __DIR__.'/auth.php';
 

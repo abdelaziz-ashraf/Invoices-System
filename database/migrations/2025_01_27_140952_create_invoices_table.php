@@ -23,7 +23,7 @@ return new class extends Migration
             $table->string('status', 50);
             $table->integer('value_status');
             $table->text('note')->nullable();
-            $table->foreignId('user_id')->constrained('users');
+            $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
             $table->softDeletes();
             $table->timestamps();
         });

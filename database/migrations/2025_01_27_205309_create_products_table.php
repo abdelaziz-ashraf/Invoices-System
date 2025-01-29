@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->text('description')->nullable();
-            $table->foreignId('section_id')->constrained('sections');
+            $table->foreignId('section_id')->constrained('sections')->cascadeOnDelete();
             $table->timestamps();
         });
     }

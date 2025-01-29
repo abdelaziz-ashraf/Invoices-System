@@ -15,14 +15,14 @@
 @endsection
 
 
-@section('title', 'المنتجات')
+@section('title', 'الموظفين')
 
 @section('page-header')
     <!-- breadcrumb -->
     <div class="breadcrumb-header justify-content-between">
         <div class="my-auto">
             <div class="d-flex">
-                <h4 class="content-title mb-0 my-auto">المنتجات</h4><span class="text-muted mt-1 tx-13 mr-2 mb-0">/ قائمة المنتجات</span>
+                <h4 class="content-title mb-0 my-auto">المستخدمين</h4><span class="text-muted mt-1 tx-13 mr-2 mb-0">/ قائمة الموظفين</span>
             </div>
         </div>
     </div>
@@ -34,6 +34,12 @@
         @if(session()->has('success'))
             <div class="alert alert-success show" role="alert">
                 <p>{{session()->get('success')}}</p>
+            </div>
+        @endif
+
+        @if(session()->has('error'))
+            <div class="alert alert-danger show" role="alert">
+                <p>{{session()->get('error')}}</p>
             </div>
         @endif
 
@@ -49,48 +55,38 @@
         <div class="col-xl-12">
             <div class="card mg-b-20">
                 <div class="card-header pb-0">
-                    @role('admin')
                     <div class="d-flex justify-content-between">
                         <div class="col-sm-6 col-md-4 col-xl-3">
-                            <a class="modal-effect btn btn-outline-primary btn-block" data-effect="effect-scale" data-toggle="modal" href="#modaldemo1">اضافة منتج</a>
+                            <a class="modal-effect btn btn-outline-primary btn-block" data-effect="effect-scale" data-toggle="modal" href="#modaldemo1">اضافة موظف</a>
                         </div>
                     </div>
-                    @endrole
                 </div>
-
                 <div class="card-body">
                     <div class="table-responsive">
                         <table id="example1" class="table key-buttons text-md-nowrap">
                             <thead>
                             <tr>
                                 <th class="border-bottom-0">#</th>
-                                <th class="border-bottom-0"> اسم المنتج </th>
-                                <th class="border-bottom-0">اسم القسم</th>
-                                <th class="border-bottom-0">ملاحظات</th>
-                                <th class="border-bottom-0"></th>
+                                <th class="border-bottom-0"> اسم الموظف </th>
+                                <th class="border-bottom-0">البريد الالكتروني</th>
+                                <th></th>
                             </tr>
                             </thead>
                             <tbody>
-                                @foreach($products as $index=>$product)
-                                    <tr>
-                                        <td>{{$index+1}}</td>
-                                        <td>{{ $product->name }}</td>
-                                        <td>{{ $product->section->name }}</td>
-                                        <td>{{ $product->description }}</td>
-                                        @role('admin')
-                                        <td>
-                                            <a href="{{route('products.edit', $product)}}"
-                                               class="btn btn-sm btn-info"
-                                            >تعديل</a>
-                                            <form action="{{route('products.destroy', $product)}}" method="post" class="d-inline-block">
-                                                @method('delete')
-                                                @csrf
-                                                <button type="submit" class="btn btn-sm btn-danger">حذف</button>
-                                            </form>
-                                        </td>
-                                        @endrole
-                                    </tr>
-                                @endforeach
+                            @foreach($employees as $index=>$employee)
+                                <tr>
+                                    <td>{{$index+1}}</td>
+                                    <td>{{ $employee->name }}</td>
+                                    <td>{{ $employee->email }}</td>
+                                    <td>
+                                        <form action="{{route('admins.delete.employee', $employee)}}" method="post"  class="d-inline-block">
+                                            @method('delete')
+                                            @csrf
+                                            <button type="submit" class="btn btn-sm btn-danger">حذف</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            @endforeach
                             </tbody>
                         </table>
                     </div>
@@ -102,32 +98,36 @@
             <div class="modal-dialog" role="document">
                 <div class="modal-content modal-content-demo">
                     <div class="modal-header">
-                        <h6 class="modal-title">اضافة منتج</h6><button aria-label="Close" class="close" data-dismiss="modal" type="button"><span aria-hidden="true">&times;</span></button>
+                        <h6 class="modal-title">اضافة موظف</h6><button aria-label="Close" class="close" data-dismiss="modal" type="button"><span aria-hidden="true">&times;</span></button>
                     </div>
                     <div class="modal-body">
-                        <form class="needs-validation was-validated" action="{{route('products.store')}}" method="post">
+                        <form class="needs-validation was-validated" action="{{route('admins.store.employee')}}" method="post">
                             @csrf
 
                             <div class="row row-sm">
                                 <div class="col-lg">
-                                    <input class="form-control" placeholder="اسم المنتج" type="text" name="name">
+                                    <input class="form-control" placeholder="اسم الموظف" type="text" name="name">
                                 </div>
                             </div>
-                            <div class="row row-sm mg-t-20">
+
+                            <div class="row row-sm mt-3">
                                 <div class="col-lg">
-                                    <select class="form-control" name="section_id">
-                                        @foreach($sections as $section)
-                                            <option>اختر القسم</option>
-                                            <option value="{{$section->id}}">{{$section->name}}</option>
-                                        @endforeach
-                                    </select>
+                                    <input class="form-control" placeholder="البريد الاليكتروني" type="email" name="email">
                                 </div>
                             </div>
-                            <div class="row row-sm mg-t-20">
+
+                            <div class="row row-sm mt-3">
                                 <div class="col-lg">
-                                    <textarea class="form-control" placeholder="ملاحظات" rows="3" name="description"></textarea>
+                                    <input class="form-control" placeholder="كلمة المرور" type="password" name="password">
                                 </div>
                             </div>
+
+                            <div class="row row-sm mt-3">
+                                <div class="col-lg">
+                                    <input class="form-control" placeholder="تأكيد كلمة المرور" type="password" name="password_confirmation">
+                                </div>
+                            </div>
+
                             <div class="modal-footer">
                                 <button class="btn ripple btn-primary" type="submit">اضافة</button>
                                 <button class="btn ripple btn-secondary" data-dismiss="modal" type="button">الغاء</button>

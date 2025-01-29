@@ -42,6 +42,7 @@
 
                     <div class="col-xl-12">
                         <div class="card mg-b-20">
+                            @role('admin')
                             <div class="card-header pb-0">
                                 <div class="d-flex justify-content-between">
                                     <div class="col-sm-6 col-md-4 col-xl-3">
@@ -49,6 +50,7 @@
                                     </div>
                                 </div>
                             </div>
+                            @endrole
                             <div class="card-body">
                                 <div class="table-responsive">
                                     <table id="example1" class="table key-buttons text-md-nowrap">
@@ -57,7 +59,9 @@
                                             <th class="border-bottom-0">#</th>
                                             <th class="border-bottom-0">اسم القسم</th>
                                             <th class="border-bottom-0">الوصف</th>
-                                            <th class="border-bottom-0">الوصف</th>
+                                            @role('admin')
+                                            <th class="border-bottom-0"></th>
+                                            @endrole
                                         </tr>
                                         </thead>
                                         <tbody>
@@ -66,6 +70,7 @@
                                                     <td>{{$index+1}}</td>
                                                     <td>{{ $section->name }}</td>
                                                     <td>{{ $section->description }}</td>
+                                                    @role('admin')
                                                     <td>
                                                         <a href="{{route('sections.edit', $section)}}"
                                                             class="btn btn-sm btn-info"
@@ -76,6 +81,7 @@
                                                             <button type="submit" class="btn btn-sm btn-danger">حذف</button>
                                                         </form>
                                                     </td>
+                                                    @endrole
                                                 </tr>
                                             @endforeach
                                         </tbody>
